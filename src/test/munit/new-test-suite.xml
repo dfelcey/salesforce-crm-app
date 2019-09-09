@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="new-test-suite.xml" />
+	<munit:test name="new-test-suite-get:\contact:crm-api-configTest" doc:id="d1cbc21e-407e-40af-8963-3cd08868ef87" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock HTTP Request" doc:id="b9adb728-3233-4f3b-b1e0-bac3618d6dc2" processor="http:request">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="123" attributeName="queryParams.id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to get:\contact:crm-api-config" doc:id="9063fdf5-ebbe-4d3f-b497-f47f133913dd" name="get:\contact:crm-api-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that Id returend is correct" doc:id="2d69071f-87b4-4239-bc3e-ff52cf287cab" expression="#[payload.id]" is="#[MunitTools::equalTo('XYZ123')]" message="Response payload not correct"/>
+		</munit:validation>
+	</munit:test>
+
+</mule>
