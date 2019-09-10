@@ -44,8 +44,8 @@
 					</execution>
 				</executions>
 				<configuration>
+					<runtimeVersion>${app.runtime}</runtimeVersion>
 					<coverage>
-						<runtimeVersion>${app.runtime}</runtimeVersion>
 						<runCoverage>true</runCoverage>
 						<formats>
 							<format>html</format>
