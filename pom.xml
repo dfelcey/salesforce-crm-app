@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
@@ -16,6 +17,13 @@
 		<app.runtime>4.2.0</app.runtime>
 		<mule.maven.plugin.version>3.2.7</mule.maven.plugin.version>
 		<munit.version>2.2.1</munit.version>
+
+		<cloudhub.username>${username}</cloudhub.username>
+		<cloudhub.password>${password}</cloudhub.password>
+		<cloudhub.application.name>${project.name}</cloudhub.application.name>
+		<cloudhub.environment>Sandbox</cloudhub.environment>
+		<cloudhub.business.group>Test</cloudhub.business.group>
+		<cloudhub.workers>1</cloudhub.workers>
 	</properties>
 
 	<build>
@@ -52,6 +60,32 @@
 					</coverage>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<version>${mule.maven.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<classifier>mule-application</classifier>
+					<cloudHubDeployment>
+						<muleVersion>${mule.version}</muleVersion>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<muleVersion>${app.runtime}</muleVersion>
+						<username>${cloudhub.username}</username>
+						<password>${cloudhub.password}</password>
+						<applicationName>${cloudhub.application.name}</applicationName>
+						<environment>${cloudhub.environment}</environment>
+						<businessGroup>${cloudhub.business.group}</businessGroup>
+						<workers>${cloudhub.workers}</workers>
+						<workerType>MICRO</workerType>
+						<region>us-east-2</region>
+						<properties>
+							<mule.env>${env.name}</mule.env>
+							<myProperty1>value1</myProperty1>
+						</properties>
+					</cloudHubDeployment>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -83,18 +117,18 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-            <groupId>com.mulesoft.connectors</groupId>
-            <artifactId>mule-salesforce-connector</artifactId>
-            <version>9.7.8</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-    	<dependency>
-            <groupId>com.mulesoft.connectors</groupId>
-            <artifactId>mule-cloudhub-connector</artifactId>
-            <version>1.0.1</version>
-            <classifier>mule-plugin</classifier>
-        </dependency>
-    </dependencies>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>mule-salesforce-connector</artifactId>
+			<version>9.7.8</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.connectors</groupId>
+			<artifactId>mule-cloudhub-connector</artifactId>
+			<version>1.0.1</version>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+	</dependencies>
 
 	<repositories>
 		<repository>
