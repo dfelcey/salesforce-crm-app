@@ -9,11 +9,11 @@ pipeline {
   stages {
     stage('Prepare') {
       steps {
-        withCredentials([file(credentialsId: 'SECURE_CONFIG_FILEY', variable: 'secure-config-file')]) {
-            sh "cp \$secure-config-file /src/main/resources/config.properties"
+      configFileProvider(
+        [configFile(fileId: 'config-file', variable: 'CONFIG_FILE')]) {
+            sh "cp \$CONFIG_FILE /src/main/resources/config.properties"
             sh 'echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"'
         }
-      }
     }
     stage('Build') {
       steps {
