@@ -14,7 +14,6 @@ pipeline {
         configFileProvider(
           [configFile(fileId: 'config-file', variable: 'CONFIG_FILE')]) {
             sh "cp \$CONFIG_FILE ./src/main/resources/config.properties"
-            sh 'echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"'
         }
       }
     }
