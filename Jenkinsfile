@@ -34,7 +34,7 @@ pipeline {
       }
     }
 
-    stage('Deploy Sandbox') {
+    stage('Deploy') {
       environment {
         ENVIRONMENT = 'Sandbox'
         APP_NAME = 'salesforce-crm-app'
