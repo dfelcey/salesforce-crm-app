@@ -4,7 +4,7 @@ pipeline {
   }
   environment {
     DEPLOY_CREDS = credentials('anypoint-user')
-    MULE_VERSION = '4.2.0
+    MULE_VERSION = '4.2.0'
   }
   stages {
     stage('Prepare') {
