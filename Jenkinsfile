@@ -1,24 +1,10 @@
-// Define variables (based on parameters set in a Jenkins job)
-// and convert them to lowercase
-def branch = ${env.BRANCH_NAME}.toLowerCase()
-
-echo "Branch: ${branch}"
-
-// Conditionally define a variable env
-if (branch == 'master') {
-  ENV = "prod"
-  ENVIRONMENT = 'Production'
-} else if (env == 'test') {
-  ENV = "test"
-  ENVIRONMENT = 'Test'
-} else {
-  ENV = "dev"
-  ENVIRONMENT = 'Sandbox'
-}
-
 pipeline {
   agent {
     label 'mule-builder'
+  }
+  environment {
+    ENV = "${env.BRANCH_NAME.toLowerCase() == 'master' ? 'prod' : 'test'}"
+    ENVIRONMENT = "${env.BRANCH_NAME.toLowerCase() == 'master' ? 'Production' : 'Sandbox'}"
   }
   
   stages {
@@ -41,7 +27,7 @@ pipeline {
     stage('Deploy') {
       environment {
         APP_NAME = 'salesforce-crm-app'
-        APP_CLIENT_CREDS = credentials("${ENV}-app-client-creds")
+        APP_CLIENT_CREDS = credentials("$ENV-app-client-creds")
         BG = "Test"
         WORKER = "MICRO"
       }
@@ -49,12 +35,12 @@ pipeline {
       steps {
         withMaven(){
             sh 'mvn -V -B deploy -DmuleDeploy \
-              -Denv=${ENV} \
+              -Denv=$ENV \
               -Dmule.version=$MULE_VERSION \
               -Danypoint.username=$DEPLOY_CREDS_USR \
               -Danypoint.password=$DEPLOY_CREDS_PSW \
               -Dcloudhub.app=$APP_NAME \
-              -Dcloudhub.environment=${ENVIRONMENT} \
+              -Dcloudhub.environment=$ENVIRONMENT \
               -Denv.ANYPOINT_CLIENT_ID=$ANYPOINT_ENV_USR \
               -Denv.ANYPOINT_CLIENT_SECRET=$ANYPOINT_ENV_PSW \
               -Dcloudhub.bg=$BG \
