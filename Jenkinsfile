@@ -1,23 +1,27 @@
+// Define variables (based on parameters set in a Jenkins job)
+// and convert them to lowercase
+def branch = ${env.BRANCH_NAME}.toLowerCase()
+
+echo "Branch: ${branch}"
+
+// Conditionally define a variable env
+if (branch == 'master') {
+  ENV = "prod"
+  ENVIRONMENT = 'Production'
+} else if (env == 'test') {
+  ENV = "test"
+  ENVIRONMENT = 'Test'
+} else {
+  ENV = "dev"
+  ENVIRONMENT = 'Sandbox'
+}
+
 pipeline {
   agent {
     label 'mule-builder'
   }
   
-  environment {
-    DEPLOY_CREDS = credentials('anypoint-user')
-    MULE_VERSION = '4.2.0'
-  }
-  
   stages {
-    stage('Prepare') {
-      steps {
-        configFileProvider(
-          [configFile(fileId: 'config-file', variable: 'CONFIG_FILE')]) {
-            sh "cp \$CONFIG_FILE ./src/main/resources/config.properties"
-        }
-      }
-    }
-    
     stage('Build') {
       steps {
         withMaven(){
@@ -36,16 +40,27 @@ pipeline {
 
     stage('Deploy') {
       environment {
-        ENVIRONMENT = 'Sandbox'
         APP_NAME = 'salesforce-crm-app'
-        APP_CLIENT_CREDS = credentials('app-client-creds')
+        APP_CLIENT_CREDS = credentials("${ENV}-app-client-creds")
         BG = "Test"
         WORKER = "MICRO"
       }
       
       steps {
         withMaven(){
-            sh 'mvn -V -B deploy -DmuleDeploy -Dmule.version=$MULE_VERSION -Danypoint.username=$DEPLOY_CREDS_USR -Danypoint.password=$DEPLOY_CREDS_PSW -Dcloudhub.app=$APP_NAME -Dcloudhub.environment=$ENVIRONMENT -Denv.ANYPOINT_CLIENT_ID=$ANYPOINT_ENV_USR -Denv.ANYPOINT_CLIENT_SECRET=$ANYPOINT_ENV_PSW -Dcloudhub.bg=$BG -Dcloudhub.worker=$WORKER -Dapp.client_id=$APP_CLIENT_CREDS_USR -Dapp.client_secret=$APP_CLIENT_CREDS_PSW'
+            sh 'mvn -V -B deploy -DmuleDeploy \
+              -Denv=${ENV} \
+              -Dmule.version=$MULE_VERSION \
+              -Danypoint.username=$DEPLOY_CREDS_USR \
+              -Danypoint.password=$DEPLOY_CREDS_PSW \
+              -Dcloudhub.app=$APP_NAME \
+              -Dcloudhub.environment=${ENVIRONMENT} \
+              -Denv.ANYPOINT_CLIENT_ID=$ANYPOINT_ENV_USR \
+              -Denv.ANYPOINT_CLIENT_SECRET=$ANYPOINT_ENV_PSW \
+              -Dcloudhub.bg=$BG \
+              -Dcloudhub.worker=$WORKER \
+              -Dapp.client_id=$APP_CLIENT_CREDS_USR \
+              -Dapp.client_secret=$APP_CLIENT_CREDS_PSW'
           }
       }
     }
