@@ -34,6 +34,7 @@ pipeline {
       
       steps {
         withMaven(){
+            sh 'echo "Building environemnt: $ENV"'
             sh 'mvn -V -B deploy -DmuleDeploy \
               -Denv=$ENV \
               -Dmule.version=$MULE_VERSION \
