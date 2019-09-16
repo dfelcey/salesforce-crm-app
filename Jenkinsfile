@@ -12,7 +12,7 @@ pipeline {
       steps {
         withMaven(){
             sh 'echo "Building environment for: $ENV"'
-            sh 'mvn clean package'
+            sh 'mvn -Denv=$ENV clean package'
           }
       }
     }
@@ -20,7 +20,7 @@ pipeline {
     stage('Test') {
       steps {
         withMaven(){
-            sh "mvn -B test"
+            sh "mvn -B -Denv=$ENV test"
         }
       }
     }
