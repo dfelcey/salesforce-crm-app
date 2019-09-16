@@ -2,6 +2,7 @@ pipeline {
   agent {
     label 'mule-builder'
   }
+  
   environment {
     ENV = "${env.BRANCH_NAME.toLowerCase() == 'master' ? 'prod' : 'test'}"
     ENVIRONMENT = "${env.BRANCH_NAME.toLowerCase() == 'master' ? 'Production' : 'Sandbox'}"
