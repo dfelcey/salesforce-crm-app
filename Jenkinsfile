@@ -11,6 +11,7 @@ pipeline {
     stage('Build') {
       steps {
         withMaven(){
+            sh 'echo "Building environment for: $ENV"'
             sh 'mvn clean package'
           }
       }
@@ -35,7 +36,7 @@ pipeline {
       
       steps {
         withMaven(){
-            sh 'echo "Building environemnt: $ENV"'
+            sh 'echo "Deploying environment for: $ENV"'
             sh 'mvn -V -B deploy -DmuleDeploy \
               -Denv=$ENV \
               -Dmule.version=$MULE_VERSION \
