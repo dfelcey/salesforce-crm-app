@@ -4,7 +4,7 @@ pipeline {
   }
   
   environment {
-    ENV = 'test
+    ENV = 'test'
     ENVIRONMENT = 'Sandbox'
   }
   
@@ -29,6 +29,7 @@ pipeline {
       environment {
         APP_NAME = 'salesforce-crm-app'
         APP_CLIENT_CREDS = credentials("$ENV-app-client-creds")
+        ANYPOINT_ENV = credentials("$ENV-anypoint-creds")
         BG = "Test"
         WORKER = "MICRO"
       }
