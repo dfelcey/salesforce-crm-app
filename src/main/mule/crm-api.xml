@@ -132,7 +132,7 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\contact:crm-api-config">
-        <logger level="INFO" doc:name="Log Request" doc:id="4ed3b6b8-69aa-4751-88db-6bcdaff8a0e7" message="Got request with contact Id: #[attributes.queryParams.id]"/>
+        <logger level="INFO" doc:name="Log Request" doc:id="4ed3b6b8-69aa-4751-88db-6bcdaff8a0e7" message="Got request with contact id: #[attributes.queryParams.id]"/>
 		<try doc:name="Try" doc:id="3cf82f46-ecc7-45dc-9bce-f92d80a5b51e" >
 			<salesforce:query-single doc:id="ce4809c7-6feb-4420-9805-0a4f653d9147" target="contactDetails" doc:name="Get Full Contact Details" config-ref="Salesforce_Config">
 			<reconnect />
