@@ -1,23 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
-http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/cloudhub http://www.mulesoft.org/schema/mule/cloudhub/current/mule-cloudhub.xsd">
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:cloudhub="http://www.mulesoft.org/schema/mule/cloudhub" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/cloudhub http://www.mulesoft.org/schema/mule/cloudhub/current/mule-cloudhub.xsd">
     <http:listener-config name="crm-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
     <apikit:config name="crm-api-config" raml="crm-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
-    <salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="efb02489-99d9-417b-83b9-74b2b73824d7" >
-		<salesforce:cached-basic-connection username="${sfdc.username}" password="${sfdc.password}" securityToken="${sfdc.token}" url="${sfdc.url}" />
-	</salesforce:sfdc-config>
-	<configuration-properties doc:name="Configuration properties" doc:id="d5ba46e7-7547-4e2b-83a8-76f31d050491" file="${env}-config.properties" />
-	<cloudhub:config name="CloudHub_Config" doc:name="CloudHub Config" doc:id="cf5e533e-d87c-4ac4-9fe1-df182d71da88" >
-		<cloudhub:connection username="${cloudhub.username}" password="${cloudhub.password}" environment="${environment.id}" />
-	</cloudhub:config>
-	<flow name="crm-api-main">
+    <salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="efb02489-99d9-417b-83b9-74b2b73824d7">
+        <salesforce:cached-basic-connection username="${sfdc.username}" password="${sfdc.password}" securityToken="${sfdc.token}" url="${sfdc.url}" />
+    </salesforce:sfdc-config>
+    <configuration-properties doc:name="Configuration properties" doc:id="d5ba46e7-7547-4e2b-83a8-76f31d050491" file="${env}-config.properties" />
+    <cloudhub:config name="CloudHub_Config" doc:name="CloudHub Config" doc:id="cf5e533e-d87c-4ac4-9fe1-df182d71da88">
+        <cloudhub:connection username="${cloudhub.username}" password="${cloudhub.password}" environment="${environment.id}" />
+    </cloudhub:config>
+    <global-property doc:name="Global Property" doc:id="f2ce0496-631f-4b66-8bf9-61b21c5f88e9" name="env" value="dev" />
+    <flow name="crm-api-main">
         <http:listener config-ref="crm-api-httpListenerConfig" path="/api/*">
-            <http:response statusCode="#[vars.httpStatus default 200]">
-            </http:response>
+            <http:response statusCode="#[vars.httpStatus default 200]" />
             <http:error-response statusCode="#[vars.httpStatus default 500]">
                 <http:body><![CDATA[#[payload]]]></http:body>
             </http:error-response>
@@ -25,7 +22,7 @@ http://www.mulesoft.org/schema/mule/cloudhub http://www.mulesoft.org/schema/mule
         <apikit:router config-ref="crm-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:BAD_REQUEST">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="8337e189-0052-409b-bac7-9a5f40f11088">
+                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="8337e189-0052-409b-bac7-9a5f40f11088">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -38,7 +35,7 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_FOUND" enableNotifications="true" logException="true">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="48024303-d421-42b6-93ef-a47e95a85ed7">
+                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="48024303-d421-42b6-93ef-a47e95a85ed7">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -51,7 +48,7 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
             <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -64,7 +61,7 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="4722d9bb-315b-41cb-a726-6769c66ffef2">
+                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="4722d9bb-315b-41cb-a726-6769c66ffef2">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -77,7 +74,7 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
             <on-error-propagate type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -90,7 +87,7 @@ output application/json
                 </ee:transform>
             </on-error-propagate>
             <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -117,7 +114,7 @@ output application/json
         <apikit:console config-ref="crm-api-config" />
         <error-handler>
             <on-error-propagate type="APIKIT:NOT_FOUND">
-                <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                     <ee:message>
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -131,21 +128,24 @@ output application/json
             </on-error-propagate>
         </error-handler>
     </flow>
-    <flow name="get:\contact:crm-api-config">
-        <logger level="INFO" doc:name="Log Request" doc:id="4ed3b6b8-69aa-4751-88db-6bcdaff8a0e7" message="Got request with contact id: #[attributes.queryParams.id]"/>
-		<try doc:name="Try" doc:id="3cf82f46-ecc7-45dc-9bce-f92d80a5b51e" >
-			<salesforce:query-single doc:id="ce4809c7-6feb-4420-9805-0a4f653d9147" target="contactDetails" doc:name="Get Full Contact Details" config-ref="Salesforce_Config">
-			<reconnect />
-			<salesforce:salesforce-query>SELECT Id, FirstName, LastName, Email, LastModifiedDate, Account.Name FROM Contact WHERE Id = ':ContactId'</salesforce:salesforce-query>
-			<salesforce:parameters><![CDATA[#[output application/java
+    <flow name="get:\contacts\(id):crm-api-config">
+		<flow-ref doc:name="Call get contact flow" doc:id="b41c8200-8d70-4b36-86a3-d87df3f75ed6" name="get-contact-flow"/>
+    </flow>
+	<sub-flow name="get-contact-flow" doc:id="9ee6b8e3-3b8b-431f-9706-5726418add81" >
+		<logger level="INFO" doc:name="Log Request" doc:id="4ed3b6b8-69aa-4751-88db-6bcdaff8a0e7" message="Got request with contact id: #[attributes.queryParams.id]" />
+		<try doc:name="Try" doc:id="3cf82f46-ecc7-45dc-9bce-f92d80a5b51e">
+            <salesforce:query-single doc:id="ce4809c7-6feb-4420-9805-0a4f653d9147" target="contactDetails" doc:name="Get Full Contact Details" config-ref="Salesforce_Config">
+                <reconnect />
+                <salesforce:salesforce-query>SELECT Id, FirstName, LastName, Email, LastModifiedDate, Account.Name FROM Contact WHERE Id = ':ContactId'</salesforce:salesforce-query>
+                <salesforce:parameters><![CDATA[#[output application/java
 ---
 {
-	ContactId : attributes.queryParams.id
+	ContactId : attributes.uriParama.id
 }]]]></salesforce:parameters>
-		</salesforce:query-single>
-			<ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="5542f9ed-a314-4bfe-b91e-d1671a3d5833" doc:name="Transform result to response format">
-            <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
+            </salesforce:query-single>
+            <ee:transform xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" doc:id="5542f9ed-a314-4bfe-b91e-d1671a3d5833" doc:name="Transform result to response format">
+                <ee:message>
+                    <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
@@ -157,46 +157,46 @@ output application/json
 	email: vars.contactDetails.Email default "",
 	lastname: vars.contactDetails.LastName default ""
 }]]></ee:set-payload>
-            </ee:message>
-        </ee:transform>
-			<error-handler >
-				<on-error-continue enableNotifications="true" logException="true" doc:name="Invalid Id error" doc:id="bb96d748-6394-46c7-adfd-bdca9abf7336" type="SALESFORCE:UNKNOWN" when='error.description contains "INVALID_QUERY_FILTER_OPERATOR"'>
-					<logger level="WARN" doc:name="Log Warning" doc:id="24dda62d-3284-4a0f-8ebb-c5ff4611fa69" message="Contanct Id invalid: #[attributes.queryParams.id]"/>
-					<ee:transform doc:name="Transform Message" doc:id="d81021f0-e053-4c25-97d5-339744190b5a" >
-						<ee:message >
-							<ee:set-payload ><![CDATA[%dw 2.0
+                </ee:message>
+            </ee:transform>
+            <error-handler>
+                <on-error-continue enableNotifications="true" logException="true" doc:name="Invalid Id error" doc:id="bb96d748-6394-46c7-adfd-bdca9abf7336" type="SALESFORCE:UNKNOWN" when="error.description contains &quot;INVALID_QUERY_FILTER_OPERATOR&quot;">
+                    <logger level="WARN" doc:name="Log Warning" doc:id="24dda62d-3284-4a0f-8ebb-c5ff4611fa69" message="Contanct Id invalid: #[attributes.queryParams.id]" />
+                    <ee:transform doc:name="Transform Message" doc:id="d81021f0-e053-4c25-97d5-339744190b5a">
+                        <ee:message>
+                            <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
 	message: "Invalid contact id"
 }]]></ee:set-payload>
-						</ee:message>
-						<ee:variables >
-							<ee:set-variable variableName="httpStatus" ><![CDATA[404]]></ee:set-variable>
-						</ee:variables>
-					</ee:transform>
-				</on-error-continue>
-				<on-error-continue enableNotifications="true" logException="true" doc:name="Cannot connect error" doc:id="3a62c897-8948-4178-9516-2932ffbad888" type="SALESFORCE:CONNECTIVITY">
-					<logger level="ERROR" doc:name="Log Error" doc:id="06b2d380-f174-4488-a8fb-7dd2208e4884" message="Cannot connect to Salesforce"/>
-					<ee:transform doc:name="Transform Message" doc:id="a3758f4d-6834-48df-974f-10f50feed327" >
-						<ee:message >
-							<ee:set-payload ><![CDATA[%dw 2.0
+                        </ee:message>
+                        <ee:variables>
+                            <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
+                        </ee:variables>
+                    </ee:transform>
+                </on-error-continue>
+                <on-error-continue enableNotifications="true" logException="true" doc:name="Cannot connect error" doc:id="3a62c897-8948-4178-9516-2932ffbad888" type="SALESFORCE:CONNECTIVITY">
+                    <logger level="ERROR" doc:name="Log Error" doc:id="06b2d380-f174-4488-a8fb-7dd2208e4884" message="Cannot connect to Salesforce" />
+                    <ee:transform doc:name="Transform Message" doc:id="a3758f4d-6834-48df-974f-10f50feed327">
+                        <ee:message>
+                            <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 {
 	message: "Cannot connect to Salesforce. " ++ error.cause.message as String default ""
 }]]></ee:set-payload>
-						</ee:message>
-						<ee:variables >
-							<ee:set-variable variableName="httpStatus" ><![CDATA[503]]></ee:set-variable>
-						</ee:variables>
-					</ee:transform>
-				</on-error-continue>
-				<on-error-propagate enableNotifications="true" logException="true" doc:name="Unknown error" doc:id="c9003fa5-b2db-440c-b022-623ece741058" type="ANY">
-					<logger level="ERROR" doc:name="Log Error" doc:id="bec34f2c-e0df-47d6-a580-97c89720d62c" message="Unknown error: #[error.detailedDescription]"/>
-					<cloudhub:create-notification domain="${domain}" doc:name="Create Notification" doc:id="09b021d9-69f0-4272-a1a9-4dce1544e834" config-ref="CloudHub_Config"/>
-				</on-error-propagate>
-			</error-handler>
-		</try>
-    </flow>
+                        </ee:message>
+                        <ee:variables>
+                            <ee:set-variable variableName="httpStatus"><![CDATA[503]]></ee:set-variable>
+                        </ee:variables>
+                    </ee:transform>
+                </on-error-continue>
+                <on-error-propagate enableNotifications="true" logException="true" doc:name="Unknown error" doc:id="c9003fa5-b2db-440c-b022-623ece741058" type="ANY">
+                    <logger level="ERROR" doc:name="Log Error" doc:id="bec34f2c-e0df-47d6-a580-97c89720d62c" message="Unknown error: #[error.detailedDescription]" />
+                    <cloudhub:create-notification domain="${domain}" doc:name="Create Notification" doc:id="09b021d9-69f0-4272-a1a9-4dce1544e834" config-ref="CloudHub_Config" />
+                </on-error-propagate>
+            </error-handler>
+        </try>
+	</sub-flow>
 </mule>

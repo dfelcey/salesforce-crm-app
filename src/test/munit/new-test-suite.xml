@@ -17,7 +17,7 @@
 			</munit-tools:mock-when>
 		</munit:behavior>
 		<munit:execution >
-			<flow-ref doc:name="Flow-ref to get:\contact:crm-api-config" doc:id="9063fdf5-ebbe-4d3f-b497-f47f133913dd" name="get:\contact:crm-api-config"/>
+			<flow-ref doc:name="Flow-ref to get:\contact:crm-api-config" doc:id="9063fdf5-ebbe-4d3f-b497-f47f133913dd" name="get-contact-flow"/>
 		</munit:execution>
 		<munit:validation >
 			<munit-tools:assert-that doc:name="Assert that cannot connect error returned" doc:id="2d69071f-87b4-4239-bc3e-ff52cf287cab" expression="#[payload.message]" is="#[MunitTools::containsString('connect')]" message="Response payload not correct"/>
