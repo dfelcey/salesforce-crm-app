@@ -1,8 +1,7 @@
 pipeline {
   agent {
     label 'mule-builder'
-  }
-  
+  }  
   environment {
     ENV = 'test'
     ENVIRONMENT = 'Sandbox'
