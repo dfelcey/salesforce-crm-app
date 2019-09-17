@@ -56,7 +56,7 @@ pipeline {
               -Dsfdc.token=$CRM_TOKEN \
               -Dsfdc.url=$CRM_URL \
               -Denv=$ENV_NAME \
-              -V -B deploy -DmuleDeploy
+              -V -B deploy -DmuleDeploy'
            }
       }
     }
