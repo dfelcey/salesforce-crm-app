@@ -11,6 +11,11 @@ pipeline {
 	ANYPOINT_BG = 'Test'
 	ANYPOINT_WORKERS = 1
 	MULE_VERSION = '4.2.0' 	
+	
+    // For CRM access
+    CRM_CREDS = credentials("$ENV_NAME-crm-creds")
+    CRM_TOKEN = credentials("$ENV_NAME-crm-token")
+    CRM_URL = credentials("$ENV_NAME-crm-url")	
   }
   
   triggers {
@@ -40,13 +45,6 @@ pipeline {
     }
 
     stage('Deploy') {
-      environment {
-        // For CRM access
-        CRM_CREDS = credentials("$ENV_NAME-crm-creds")
-        CRM_TOKEN = credentials("$ENV_NAME-crm-token")
-        CRM_URL = credentials("$ENV_NAME-crm-url")
-      }
-      
       steps {
         withMaven(){
             sh 'echo "URL is $CRM_URL"'
