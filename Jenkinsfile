@@ -50,13 +50,7 @@ pipeline {
       steps {
         withMaven(){
             sh 'echo "Deploying environment for: $ENV_NAME"'
-            sh 'mvn  \
-              -Dsfdc.username=$CRM_CREDS_USR \
-              -Dsfdc.password=$CRM_CREDS_PWD \
-              -Dsfdc.token=$CRM_TOKEN \
-              -Dsfdc.url=$CRM_URL \
-              -Denv=$ENV_NAME \
-              -V -B deploy -DmuleDeploy'
+            sh 'mvn -V -B deploy -DmuleDeploy'
            }
       }
     }

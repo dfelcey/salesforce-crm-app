@@ -7,11 +7,11 @@
     <salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="efb02489-99d9-417b-83b9-74b2b73824d7">
         <salesforce:cached-basic-connection username="${sfdc.username}" password="${sfdc.password}" securityToken="${sfdc.token}" url="${sfdc.url}" />
     </salesforce:sfdc-config>
-    <configuration-properties doc:name="Configuration properties" doc:id="d5ba46e7-7547-4e2b-83a8-76f31d050491" file="${env}-config.properties" />
+    <configuration-properties doc:name="Configuration properties" doc:id="d5ba46e7-7547-4e2b-83a8-76f31d050491" file="${mule.env}-config.properties" />
     <cloudhub:config name="CloudHub_Config" doc:name="CloudHub Config" doc:id="cf5e533e-d87c-4ac4-9fe1-df182d71da88">
         <cloudhub:connection username="${cloudhub.username}" password="${cloudhub.password}" environment="${environment.id}" />
     </cloudhub:config>
-    <global-property doc:name="Global Property" doc:id="f2ce0496-631f-4b66-8bf9-61b21c5f88e9" name="env" value="dev" />
+    <global-property doc:name="Global Property" doc:id="f2ce0496-631f-4b66-8bf9-61b21c5f88e9" name="mule.env" value="dev" />
     <flow name="crm-api-main">
         <http:listener config-ref="crm-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]" />
