@@ -129,11 +129,14 @@ output application/json
         </error-handler>
     </flow>
     <flow name="get:\contacts\(id):crm-api-config">
-		<flow-ref doc:name="Call get contact flow" doc:id="b41c8200-8d70-4b36-86a3-d87df3f75ed6" name="get-contact-flow"/>
+        <flow-ref doc:name="Call get contact flow" doc:id="b41c8200-8d70-4b36-86a3-d87df3f75ed6" name="get-contact-flow" />
     </flow>
-	<sub-flow name="get-contact-flow" doc:id="9ee6b8e3-3b8b-431f-9706-5726418add81" >
-		<logger level="INFO" doc:name="Log Request" doc:id="4ed3b6b8-69aa-4751-88db-6bcdaff8a0e7" message="Got request with contact id: #[attributes.queryParams.id]" />
-		<try doc:name="Try" doc:id="3cf82f46-ecc7-45dc-9bce-f92d80a5b51e">
+    <flow name="get:\contacts:crm-api-config">
+		<flow-ref doc:name="Call get contacts flow" doc:id="e56bfed4-5c03-489b-b853-c62f1b7392aa" name="get-contacts-flow"/>
+    </flow>
+	<sub-flow name="get-contact-flow" doc:id="9ee6b8e3-3b8b-431f-9706-5726418add81">
+        <logger level="INFO" doc:name="Log Request" doc:id="4ed3b6b8-69aa-4751-88db-6bcdaff8a0e7" message="Getting details for contact with id: #[attributes.uriParams.id]" />
+        <try doc:name="Try" doc:id="3cf82f46-ecc7-45dc-9bce-f92d80a5b51e">
             <salesforce:query-single doc:id="ce4809c7-6feb-4420-9805-0a4f653d9147" target="contactDetails" doc:name="Get Full Contact Details" config-ref="Salesforce_Config">
                 <reconnect />
                 <salesforce:salesforce-query>SELECT Id, FirstName, LastName, Email, LastModifiedDate, Account.Name FROM Contact WHERE Id = ':ContactId'</salesforce:salesforce-query>
@@ -198,5 +201,74 @@ output application/json
                 </on-error-propagate>
             </error-handler>
         </try>
+    </sub-flow>
+	<sub-flow name="get-contacts-flow" doc:id="a2dc00b3-ef38-4cb4-b963-59236d27aff1" >
+		<logger level="INFO" doc:name="Log request" doc:id="237b07e9-a2b9-40c5-80c6-26ef993f6e31" message="Got contacts changed since: #[attributes.queryParams.changedSince]"/>
+		<try doc:name="Try" doc:id="a34c7b38-49b5-416f-a2d4-d4d096f11946" >
+			<set-variable value='#[attributes.queryParams.changedSince as String ++ "Z"]' doc:name="Format input datatime" doc:id="e56c0ee0-68cb-44f5-b838-aaf1ecd80285" variableName="sinceDateTime"/>
+			<salesforce:query-all doc:name="Get changed contact details" doc:id="4f70fbc4-1f59-4823-bd26-59ce2752f3a0" config-ref="Salesforce_Config">
+				<salesforce:salesforce-query >SELECT Id, FirstName, LastName, Email, LastModifiedDate, CreatedDate, Account.Name FROM Contact WHERE LastModifiedDate &gt; :SinceDate OR CreatedDate &gt;  :SinceDate  </salesforce:salesforce-query>
+				<salesforce:parameters ><![CDATA[#[output application/java
+---
+{
+	SinceDate : vars.sinceDateTime
+}]]]></salesforce:parameters>
+			</salesforce:query-all>
+			<logger level="INFO" doc:name="Log result" doc:id="aae86872-5bce-4236-8ecc-f49a77a4eb7c" message="#[output application/json --- payload]"/>
+			<ee:transform doc:name="Transform result to response format" doc:id="4182e63e-9f10-412d-8a95-361c480f4425" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map(item, index) -> {
+	id: if (item.Account != null) item.Account.Name default "" else "",
+	firstname: item.FirstName default "",
+	phone: "",
+	created: item.CreatedDate as String default "",
+	modified: item.LastModifiedDate as String default "",
+	email: item.Email default "",
+	lastname: item.LastName default ""
+}]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<error-handler >
+				<on-error-continue enableNotifications="true" logException="true" doc:name="Invalid Id error" doc:id="561eaae3-81c7-4e89-87bb-3bfca54d2147" type="SALESFORCE:UNKNOWN" when='error.description contains "INVALID_QUERY_FILTER_OPERATOR"' >
+					<logger level="WARN" doc:name="Log Warning" doc:id="953e4dd6-1d3c-4b52-9af9-a84c1928307f" message="Contanct Id invalid: #[attributes.queryParams.id]" />
+					<ee:transform doc:name="Transform Message" doc:id="ed10fe46-0843-4e07-816f-7760dcd82981" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Invalid contact id"
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="httpStatus" ><![CDATA[404]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+				</on-error-continue>
+				<on-error-continue enableNotifications="true" logException="true" doc:name="Cannot connect error" doc:id="959f5d6a-d6fd-4a3c-bb0e-efabe72ab337" type="SALESFORCE:CONNECTIVITY" >
+					<logger level="ERROR" doc:name="Log Error" doc:id="41a144f5-878f-419c-86e5-601790e30e84" message="Cannot connect to Salesforce" />
+					<ee:transform doc:name="Transform Message" doc:id="29253d2a-721e-4cdf-9f00-98bf5733b4b4" >
+						<ee:message >
+							<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	message: "Cannot connect to Salesforce. " ++ error.cause.message as String default ""
+}]]></ee:set-payload>
+						</ee:message>
+						<ee:variables >
+							<ee:set-variable variableName="httpStatus" ><![CDATA[503]]></ee:set-variable>
+						</ee:variables>
+					</ee:transform>
+				</on-error-continue>
+				<on-error-propagate enableNotifications="true" logException="true" doc:name="Unknown error" doc:id="8c2e86a8-0140-48e6-94db-5fc3b0b8bdb1" type="ANY" >
+					<logger level="ERROR" doc:name="Log Error" doc:id="e4c2979f-7251-4dcb-b18f-4b03068fc422" message="Unknown error: #[error.detailedDescription]" />
+					<cloudhub:create-notification domain="${domain}" doc:name="Create Notification" doc:id="155c2277-2be8-45a6-b128-d2cc724f62e6" config-ref="CloudHub_Config" />
+				</on-error-propagate>
+			</error-handler>
+		</try>
 	</sub-flow>
 </mule>
