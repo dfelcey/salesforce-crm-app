@@ -21,13 +21,6 @@
 		<app.runtime>4.2.0</app.runtime>
 		<mule.maven.plugin.version>3.2.7</mule.maven.plugin.version>
 		<munit.version>2.2.1</munit.version>
-
-		<cloudhub.username>${username}</cloudhub.username>
-		<cloudhub.password>${password}</cloudhub.password>
-		<cloudhub.application.name>${project.name}</cloudhub.application.name>
-		<cloudhub.environment>Sandbox</cloudhub.environment>
-		<cloudhub.business.group>Test</cloudhub.business.group>
-		<cloudhub.workers>1</cloudhub.workers>
 	</properties>
 
 	<build>
@@ -72,20 +65,20 @@
 				<configuration>
 					<classifier>mule-application</classifier>
 					<cloudHubDeployment>
-						<muleVersion>${mule.version}</muleVersion>
+						<muleVersion>${MULE_VERSION}</muleVersion>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
-						<username>${cloudhub.username}</username>
-						<password>${cloudhub.password}</password>
-						<applicationName>${cloudhub.application.name}</applicationName>
-						<environment>${cloudhub.environment}</environment>
-						<businessGroup>${cloudhub.business.group}</businessGroup>
-						<workers>${cloudhub.workers}</workers>
+						<username>${ANYPOINT_CREDS_USER}</username>
+						<password>${ANYPOINT_CREDS_PWD}</password>
+						<applicationName>${APP_NAME}</applicationName>
+						<environment>${ANYPOINT_ENV}</environment>
+						<businessGroup>${ANYPOINT_BG}</businessGroup>
+						<workers>${ANYPOINT_WORKERS}</workers>
 						<workerType>MICRO</workerType>
 						<region>us-east-2</region>
 						<properties>
-							<mule.env>${env.name}</mule.env>
-							<myProperty1>value1</myProperty1>
+							<mule.env>env</mule.env>
+							<myProperty1>${ENV_NAME}</myProperty1>
 						</properties>
 					</cloudHubDeployment>
 				</configuration>
