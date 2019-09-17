@@ -49,6 +49,7 @@ pipeline {
       
       steps {
         withMaven(){
+            sh 'echo "URL is $CRM_URL"'
             sh 'echo "Deploying environment for: $ENV_NAME"'
             sh 'mvn -V -B deploy -DmuleDeploy'
            }
