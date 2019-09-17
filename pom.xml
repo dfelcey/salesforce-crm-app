@@ -3,7 +3,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
 	<groupId>com.mycompany</groupId>
 	<artifactId>salesforce-crm-app</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
@@ -65,25 +64,23 @@
 				<configuration>
 					<classifier>mule-application</classifier>
 					<cloudHubDeployment>
-						<muleVersion>${MULE_VERSION}</muleVersion>
+						<muleVersion>${env.MULE_VERSION}</muleVersion>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
-						<username>${ANYPOINT_CREDS_USER}</username>
-						<password>${ANYPOINT_CREDS_PWD}</password>
-						<applicationName>${APP_NAME}</applicationName>
-						<environment>${ANYPOINT_ENV}</environment>
-						<businessGroup>${ANYPOINT_BG}</businessGroup>
-						<workers>${ANYPOINT_WORKERS}</workers>
+						<username>${env.ANYPOINT_CREDS_USER}</username>
+						<password>${env.ANYPOINT_CREDS_PWD}</password>
+						<applicationName>${env.APP_NAME}</applicationName>
+						<environment>${env.ANYPOINT_ENV}</environment>
+						<businessGroup>${env.ANYPOINT_BG}</businessGroup>
+						<workers>${env.ANYPOINT_WORKERS}</workers>
 						<workerType>MICRO</workerType>
 						<region>us-east-2</region>
 						<properties>
-							<mule.env>${MULE_ENV}</mule.env>
-							<sfdc.username>${CRM_CREDS_US}</sfdc.username>
-							<sfdc.password>${CRM_CREDS_PWD}</sfdc.password>
-							<mule.env>sfdc.token</mule.env>
-							<sfdc.token>${CRM_TOKEN}</sfdc.token>
-							<mule.env>sfdc.url</mule.env>
-							<myProperty5>${CRM_URL}</myProperty5>
+							<mule.env>${env.MULE_ENV}</mule.env>
+							<sfdc.username>${env.CRM_CREDS_US}</sfdc.username>
+							<sfdc.password>${env.CRM_CREDS_PWD}</sfdc.password>
+							<sfdc.token>${env.CRM_TOKEN}</sfdc.token>
+							<sfdc.url>${env.CRM_URL}</sfdc.url>
 						</properties>
 					</cloudHubDeployment>
 				</configuration>
