@@ -15,6 +15,8 @@ pipeline {
     CRM_CREDS = credentials("$ENV_NAME-crm-creds")
     CRM_TOKEN = credentials("$ENV_NAME-crm-token")
     CRM_URL = credentials("$ENV_NAME-crm-url")	
+    
+    MVN_SYS_PROPS = '-Dmule.env=$ENV_NAME -Dapp.name=$APP_NAME -Danypoint.username=$ANYPOINT_CREDS_USR -Danypont.password=$ANYPOINT_CREDS_PWD -Danypoint.environment=$ANYPOINT_ENV -Danypont.business_group=$ANYPOINT_BG -Dnypoint.platform.client_id=$ANYPOINT_CLIENT_CREDS_USR -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_CREDS_PWD -Dsfdc.username=$CRM_CREDS_USR -Dsfdc.password=$CRM_CREDS_USR -Dsfdc.token=$CRM_TOKEN -Dsfdc.url=$CRM_URL'
   }
   
   triggers {
@@ -30,19 +32,7 @@ pipeline {
       steps {
         withMaven(){
             sh 'echo "Building environment for: $ENV"'
-        		sh 'env'
-            sh '''
-            		mvn -V \
-                -Dmule.env=$ENV_NAME \   
-                -Dapp.name=$APP_NAME \        		
-				-Danypoint.username=$ANYPOINT_CREDS_USR \
-				-Danypont.password=$ANYPOINT_CREDS_PWD \
-				-Dsfdc.username=$CRM_CREDS_USR \       		           
-				-Dsfdc.password=$CRM_CREDS_USR \       		           
-				-Dsfdc.token=$CRM_TOKEN \       		           
-				-Dsfdc.url=$CRM_URL \       		           
-            		clean package
-            	'''
+            sh 'mvn -V $MVN_SYS_PROPS clean package'
           }
       }
     }
@@ -51,18 +41,7 @@ pipeline {
       steps {
         withMaven(){
             sh 'env'
-            sh '''
-            		mvn -V -B \
-                -Dmule.env=$ENV_NAME \    
-                -Dapp.name=$APP_NAME \        		
-				-Danypoint.username=$ANYPOINT_CREDS_USR \
-				-Danypont.password=$ANYPOINT_CREDS_PWD \
-				-Dsfdc.username=$CRM_CREDS_USR \       		           
-				-Dsfdc.password=$CRM_CREDS_USR \       		           
-				-Dsfdc.token=$CRM_TOKEN \       		           
-				-Dsfdc.url=$CRM_URL \       		           
-            		test
-            	'''
+            sh 'mvn -V -B $MVN_SYS_PROPS test'
         }
       }
     }
@@ -70,25 +49,8 @@ pipeline {
     stage('Deploy') {
       steps {
         withMaven(){
-            sh 'echo "URL is $CRM_URL"'
-         	sh 'env'
             sh 'echo "Deploying environment for: $ENV_NAME"'
-            sh '''
-            		mvn -V -B \
-            		-Dmule.env=$ENV_NAME \           		
-                -Dapp.name=$APP_NAME \        		
-				-Danypoint.username=$ANYPOINT_CREDS_USR \
-				-Danypont.password=$ANYPOINT_CREDS_PWD \
-				-Danypoint.environment=$ANYPOINT_ENV \
-				-Danypont.business_group=$ANYPOINT_BG  \ 
-				-Dnypoint.platform.client_id=$ANYPOINT_CLIENT_CREDS_USR \
-				-Danypoint.platform.client_secret=$ANYPOINT_CLIENT_CREDS_PWD \
-				-Dsfdc.username=$CRM_CREDS_USR \       		           
-				-Dsfdc.password=$CRM_CREDS_USR \       		           
-				-Dsfdc.token=$CRM_TOKEN \       		           
-				-Dsfdc.url=$CRM_URL \       		           
-            		 deploy -DmuleDeploy
-           	'''
+            sh 'mvn -V -B $MVN_SYS_PROPS deploy -DmuleDeploy'
            }
       }
     }
