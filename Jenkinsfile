@@ -32,7 +32,7 @@ pipeline {
       steps {
         withMaven(){
             sh 'echo "Building environment for: $ENV"'
-            sh 'mvn -Denv=$ENV_NAME clean package'
+            sh 'mvn -V -Denv=$ENV_NAME clean package --debug'
           }
       }
     }
