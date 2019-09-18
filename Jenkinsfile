@@ -31,6 +31,7 @@ pipeline {
     stage('Build') {
       steps {
         withMaven(){
+        		sh 'env'
             sh 'echo "Building environment for: $ENV"'
             sh 'mvn -V -Denv=$ENV_NAME clean package --debug'
           }
