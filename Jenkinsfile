@@ -31,9 +31,9 @@ pipeline {
     stage('Build') {
       steps {
         withMaven(){
-        		sh 'env'
             sh 'echo "Building environment for: $ENV"'
-            sh 'mvn -V -Denv=$ENV_NAME clean package --debug'
+        		sh 'env'
+            sh 'mvn -V -Denv=$ENV_NAME clean package'
           }
       }
     }
@@ -41,7 +41,8 @@ pipeline {
     stage('Test') {
       steps {
         withMaven(){
-            sh 'mvn -V -B -Denv=$ENV_NAME test --debug'
+            sh 'env'
+            sh 'mvn -V -B -Denv=$ENV_NAME test'
         }
       }
     }
@@ -50,6 +51,7 @@ pipeline {
       steps {
         withMaven(){
             sh 'echo "URL is $CRM_URL"'
+         	sh 'env'
             sh 'echo "Deploying environment for: $ENV_NAME"'
             sh 'mvn -V -B deploy -DmuleDeploy'
            }
