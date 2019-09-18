@@ -70,11 +70,11 @@
 				<configuration>
 					<classifier>mule-application</classifier>
 					<cloudHubDeployment>
-						<muleVersion>${mule.versionN}</muleVersion>
+						<muleVersion>${mule.version}</muleVersion>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
-						<username>${anypoint.usernameR}</username>
-						<password>${anypont.passwordD}</password>
+						<username>${anypoint.username}</username>
+						<password>${anypont.password}</password>
 						<applicationName>${app.name}</applicationName>
 						<environment>${anypoint.environment}</environment>
 						<businessGroup>${anypont.business_group}</businessGroup>
