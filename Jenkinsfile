@@ -40,7 +40,7 @@ pipeline {
     stage('Test') {
       steps {
         withMaven(){
-            sh "mvn -B -Denv=$ENV_NAME test"
+            sh 'mvn -V -B -Denv=$ENV_NAME test --debug'
         }
       }
     }
