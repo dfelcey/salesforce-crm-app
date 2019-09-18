@@ -31,7 +31,8 @@ pipeline {
         withMaven(){
             sh 'echo "Building environment for: $ENV"'
         		sh 'env'
-            sh 'mvn -V \
+            sh '''
+            		mvn -V \
                 -Dmule.env=$ENV_NAME \   
                 -Dapp.name=$APP_NAME \        		
 				-Danypoint.username=$ANYPOINT_CREDS_USR \
@@ -40,7 +41,8 @@ pipeline {
 				-Dsfdc.password=$CRM_CREDS_USR \       		           
 				-Dsfdc.token=$CRM_TOKEN \       		           
 				-Dsfdc.url=$CRM_URL \       		           
-            		clean package'
+            		clean package
+            	'''
           }
       }
     }
@@ -49,7 +51,8 @@ pipeline {
       steps {
         withMaven(){
             sh 'env'
-            sh 'mvn -V -B \
+            sh '''
+            		mvn -V -B \
                 -Dmule.env=$ENV_NAME \    
                 -Dapp.name=$APP_NAME \        		
 				-Danypoint.username=$ANYPOINT_CREDS_USR \
@@ -58,7 +61,8 @@ pipeline {
 				-Dsfdc.password=$CRM_CREDS_USR \       		           
 				-Dsfdc.token=$CRM_TOKEN \       		           
 				-Dsfdc.url=$CRM_URL \       		           
-            		test'
+            		test
+            	'''
         }
       }
     }
@@ -69,7 +73,8 @@ pipeline {
             sh 'echo "URL is $CRM_URL"'
          	sh 'env'
             sh 'echo "Deploying environment for: $ENV_NAME"'
-            sh 'mvn -V -B \
+            sh '''
+            		mvn -V -B \
             		-Dmule.env=$ENV_NAME \           		
                 -Dapp.name=$APP_NAME \        		
 				-Danypoint.username=$ANYPOINT_CREDS_USR \
@@ -82,7 +87,8 @@ pipeline {
 				-Dsfdc.password=$CRM_CREDS_USR \       		           
 				-Dsfdc.token=$CRM_TOKEN \       		           
 				-Dsfdc.url=$CRM_URL \       		           
-            		 deploy -DmuleDeploy'
+            		 deploy -DmuleDeploy
+           	'''
            }
       }
     }
