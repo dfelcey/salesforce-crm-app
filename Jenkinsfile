@@ -6,6 +6,7 @@ pipeline {
   environment {
   	ENV_NAME = 'test'   
     ANYPOINT_CREDS = credentials("$ENV_NAME-anypoint-creds")
+    ANYPOINT_CLIENT_CREDS = credentials("$ENV_NAME-anypoint-client-creds")
 	APP_NAME = 'salesforce-crm-app'
 	ANYPOINT_ENV = 'Sandbox'
 	ANYPOINT_BG = 'Test'

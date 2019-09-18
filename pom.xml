@@ -67,7 +67,7 @@
 						<muleVersion>${env.MULE_VERSION}</muleVersion>
 						<uri>https://anypoint.mulesoft.com</uri>
 						<muleVersion>${app.runtime}</muleVersion>
-						<username>${env.ANYPOINT_CREDS_USER}</username>
+						<username>${env.ANYPOINT_CREDS_USR}</username>
 						<password>${env.ANYPOINT_CREDS_PWD}</password>
 						<applicationName>${env.APP_NAME}</applicationName>
 						<environment>${env.ANYPOINT_ENV}</environment>
@@ -77,10 +77,12 @@
 						<region>us-east-2</region>
 						<properties>
 							<mule.env>${env.MULE_ENV}</mule.env>
-							<sfdc.username>${env.CRM_CREDS_US}</sfdc.username>
+							<sfdc.username>${env.CRM_CREDS_USR}</sfdc.username>
 							<sfdc.password>${env.CRM_CREDS_PWD}</sfdc.password>
 							<sfdc.token>${env.CRM_TOKEN}</sfdc.token>
 							<sfdc.url>${env.CRM_URL}</sfdc.url>
+                             <anypoint.platform.client_id>${env.ANYPOINT_CLIENT_CREDS_USR}</anypoint.platform.client_id>
+                             <anypoint.platform.client_secret>${env.ANYPOINT_CLIENT_CREDS_PWD}</anypoint.platform.client_secret>
 						</properties>
 					</cloudHubDeployment>
 				</configuration>
