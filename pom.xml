@@ -51,7 +51,7 @@
 						<runCoverage>true</runCoverage>
 						  <failBuild>true</failBuild>
 
-						  <requiredApplicationCoverage>20</requiredApplicationCoverage>
+						  <requiredApplicationCoverage>10</requiredApplicationCoverage>
 						  <requiredResourceCoverage>10</requiredResourceCoverage>
 						  <requiredFlowCoverage>5</requiredFlowCoverage>
 						
