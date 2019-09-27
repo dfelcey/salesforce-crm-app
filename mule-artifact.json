@@ -1,7 +1,1 @@
-{
-	"minMuleVersion": "4.2.0",
-	"secureProperties": [
-		"password",
-		"username"
-	]
-}
+{"minMuleVersion":"4.2.0","secureProperties":["password","username"]}

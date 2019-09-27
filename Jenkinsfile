@@ -16,7 +16,19 @@ pipeline {
     CRM_TOKEN = credentials("$ENV_NAME-crm-token")
     CRM_URL = credentials("$ENV_NAME-crm-url")	
     
-    MVN_SYS_PROPS = "-Dmule.env=$ENV_NAME -Dapp.name=$APP_NAME -Danypoint.username=$ANYPOINT_CREDS_USR -Danypont.password=$ANYPOINT_CREDS_PWD -Danypoint.environment=$ANYPOINT_ENV -Danypont.business_group=$ANYPOINT_BG -Dnypoint.platform.client_id=$ANYPOINT_CLIENT_CREDS_USR -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_CREDS_PWD -Dsfdc.username=$CRM_CREDS_USR -Dsfdc.password=$CRM_CREDS_PWD -Dsfdc.token=$CRM_TOKEN -Dsfdc.url=$CRM_URL"
+    MVN_SYS_PROPS = """
+    	-Dmule.env=$ENV_NAME \
+    	-Dapp.name=$APP_NAME \
+    	-Danypoint.username=$ANYPOINT_CREDS_USR \
+    	-Danypont.password=$ANYPOINT_CREDS_PWD \
+    	-Danypoint.environment=$ANYPOINT_ENV \
+    	-Danypont.business_group=$ANYPOINT_BG \
+    	-Dnypoint.platform.client_id=$ANYPOINT_CLIENT_CREDS_USR \
+    	-Danypoint.platform.client_secret=$ANYPOINT_CLIENT_CREDS_PWD \
+    	-Dsfdc.username=$CRM_CREDS_USR \
+    	-Dsfdc.password=$CRM_CREDS_PWD \
+    	-Dsfdc.token=$CRM_TOKEN -Dsfdc.url=$CRM_URL
+    	"""
   }
   
   triggers {

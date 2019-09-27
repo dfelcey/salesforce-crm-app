@@ -1,0 +1,36 @@
+#%RAML 1.0 DataType
+description: Contact Data Type
+
+displayName: Contact
+properties:
+  id:
+    description: Unique Id
+    type: string
+  email:
+    description: Email address
+    type: string
+    pattern: ^.+@.+\..+$
+  created:
+    type: datetime-only
+  modified:
+    type: datetime-only
+  firstname:
+    description: First name
+    type: string
+    pattern: ^[a-zA-Z ]*$
+  lastname:
+    description: Last name
+    type: string
+    pattern: ^[a-zA-Z ]*$
+  phone:
+    description: First name
+    type: string
+    pattern: ^[0-9]*$
+example:
+  id: "XYZ123"
+  email: "fred.bloggs@yahoo.com"
+  created: 2019-06-15T09:12:37
+  modified: 2019-09-01T11:45:34
+  lastname: "Bloggs"
+  firstname: "Fred"
+  phone: "4407886553541"
