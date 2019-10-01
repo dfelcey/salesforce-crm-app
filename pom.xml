@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
@@ -11,7 +12,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.reporting.outputEncoding>UTF-8
+		</project.reporting.outputEncoding>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -51,11 +53,8 @@
 						<runCoverage>true</runCoverage>
 						<failBuild>true</failBuild>
 
-						<!-- 
-							<requiredApplicationCoverage>10</requiredApplicationCoverage> 
-							<requiredResourceCoverage>10</requiredResourceCoverage> 
-							<requiredFlowCoverage>5</requiredFlowCoverage> 
-						-->
+						<!-- <requiredApplicationCoverage>10</requiredApplicationCoverage> 
+							<requiredResourceCoverage>10</requiredResourceCoverage> <requiredFlowCoverage>5</requiredFlowCoverage> -->
 						<formats>
 							<format>html</format>
 						</formats>
@@ -152,6 +151,11 @@
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>mule-public</id>
+			<url>https://repository.mulesoft.org/nexus/content/repositories/releases
+			</url>
 		</pluginRepository>
 	</pluginRepositories>
 </project>
