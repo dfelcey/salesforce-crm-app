@@ -35,7 +35,7 @@ pipeline {
     	
     stage('Deploy Development') {
       when {
-        branch 'develop'
+        branch 'master'
       }
       environment {
         ENVIRONMENT = 'Sandbox'
