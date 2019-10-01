@@ -29,7 +29,9 @@ pipeline {
 
     stage('Test') {
       steps {
-        sh 'mvn -B test -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION'
+        mavenSettingsConfig: 'f007350a-b1d5-44a8-9757-07c22cd2a360'){
+         sh 'mvn -B test -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION'
+        }
       }
     }
     	
