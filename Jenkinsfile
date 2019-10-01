@@ -23,13 +23,13 @@ pipeline {
     
     stage('Build') {
       steps {
-        sh 'mvn -B clean package -Dmule.env=$ENV_NAME -DskipTests'
+        sh 'mvn -B clean package -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION -DskipTests'
       }
     }
 
     stage('Test') {
       steps {
-        sh 'mvn -B test -Dmule.env=$ENV_NAME'
+        sh 'mvn -B test -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION'
       }
     }
     	

@@ -16,7 +16,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<app.runtime>4.2.0</app.runtime>
+		<mule.version>4.1.0</mule.version>
 		<mule.maven.plugin.version>3.2.7</mule.maven.plugin.version>
 		<munit.version>2.2.1</munit.version>
 	</properties>
@@ -46,7 +46,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<runtimeVersion>${app.runtime}</runtimeVersion>
+					<runtimeVersion>${mule.version}</runtimeVersion>
 					<coverage>
 						<runCoverage>true</runCoverage>
 						<failBuild>true</failBuild>
@@ -73,7 +73,7 @@
 					<cloudHubDeployment>
 						<muleVersion>${mule.version}</muleVersion>
 						<uri>https://anypoint.mulesoft.com</uri>
-						<muleVersion>${app.runtime}</muleVersion>
+						<muleVersion>${mule.version}</muleVersion>
 						<username>${anypoint.username}</username>
 						<password>${anypont.password}</password>
 						<applicationName>${app.name}-${mule.env}</applicationName>
