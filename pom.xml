@@ -16,7 +16,7 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
-		<mule.version>4.1.0</mule.version>
+		<mule.version>4.1.1</mule.version>
 		<mule.maven.plugin.version>3.2.7</mule.maven.plugin.version>
 		<munit.version>2.2.1</munit.version>
 	</properties>
