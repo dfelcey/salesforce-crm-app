@@ -221,7 +221,10 @@ output application/json
         <try doc:name="Try" doc:id="a34c7b38-49b5-416f-a2d4-d4d096f11946">
             <set-variable value="#[attributes.queryParams.changedSince as String ++ &quot;Z&quot;]" doc:name="Format input datatime" doc:id="e56c0ee0-68cb-44f5-b838-aaf1ecd80285" variableName="sinceDateTime" />
             <salesforce:query-all doc:name="Get changed contact details" doc:id="4f70fbc4-1f59-4823-bd26-59ce2752f3a0" config-ref="Salesforce_Config">
-                <salesforce:salesforce-query>SELECT Id, FirstName, LastName, Email, LastModifiedDate, CreatedDate, Account.Name FROM Contact WHERE LastModifiedDate &gt; :SinceDate OR CreatedDate &gt;  :SinceDate</salesforce:salesforce-query>
+                <salesforce:salesforce-query>SELECT Id, FirstName, LastName, Email, LastModifiedDate, CreatedDate, Account.Name 
+FROM Contact 
+WHERE LastModifiedDate &gt; :SinceDate OR CreatedDate &gt;  :SinceDate
+ORDER BY LastModifiedDate ASC</salesforce:salesforce-query>
                 <salesforce:parameters><![CDATA[#[output application/java
 ---
 {
