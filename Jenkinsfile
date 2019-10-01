@@ -14,7 +14,7 @@ pipeline {
   stages {
     stage('Prepare') {
       steps {
-        configFileProvider([configFile(fileId: "${APP_NAME}-config.properties", replaceTokens: true, targetLocation: './src/main/resources/${ENV_NAME}-config.properties')]) {
+        configFileProvider([configFile(fileId: "${APP_NAME}-config.properties", replaceTokens: true, targetLocation: "./src/main/resources/${ENV_NAME}-config.properties")]) {
           sh 'echo "Branch NAME: $BRANCH_NAME"'
           sh 'echo "Environment NAME: $ENV_NAME"'
         }
