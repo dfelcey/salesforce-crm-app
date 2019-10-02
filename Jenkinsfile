@@ -8,7 +8,7 @@ pipeline {
     DEPLOY_CREDS = credentials('deploy-anypoint-user')
     MULE_VERSION = '4.1.5'
     	APP_NAME = "salesforce-crm-app-$ENV_NAME"
-    BG = "EMEA UK"
+    BG = "1Platform\\Solutions Consulting\\EMEA UK"
   }
   
   stages {
