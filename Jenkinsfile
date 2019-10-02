@@ -29,7 +29,7 @@ pipeline {
 
     stage('Test') {
       steps {
-        withMaven(mavenSettingsConfig: 'public-maven-config.xml'){   
+        withMaven(mavenSettingsConfig: 'bcd6979a-61dd-458b-8fa4-d8a0af5cd97d'){   
           sh 'mvn -B test -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION'
         }
       }
