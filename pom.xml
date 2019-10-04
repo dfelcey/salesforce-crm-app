@@ -51,12 +51,14 @@
 					<runtimeVersion>${mule.version}</runtimeVersion>
 					<coverage>
 						<runCoverage>true</runCoverage>
-						<failBuild>true</failBuild>
+						<failBuild>false</failBuild>
 
-						<!-- <requiredApplicationCoverage>10</requiredApplicationCoverage> 
-							<requiredResourceCoverage>10</requiredResourceCoverage> <requiredFlowCoverage>5</requiredFlowCoverage> -->
+					    <requiredApplicationCoverage>75</requiredApplicationCoverage>
+					    <requiredResourceCoverage>50</requiredResourceCoverage>
+					    <requiredFlowCoverage>50</requiredFlowCoverage>
+
 						<formats>
-							<format>html</format>
+							<format>console</format>
 						</formats>
 					</coverage>
 					<enableSurefireReports>true</enableSurefireReports>
