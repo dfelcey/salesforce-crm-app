@@ -23,7 +23,6 @@ pipeline {
     
     stage('Build') {
       steps {
-      steps {
         withMaven(mavenSettingsConfig: 'bcd6979a-61dd-458b-8fa4-d8a0af5cd97d'){   
           sh 'mvn -B clean package -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION -DskipTests'
         }
@@ -46,7 +45,6 @@ pipeline {
         ENVIRONMENT = 'Sandbox'
         ANYPOINT_CLIENT_CREDS = credentials("$ENV_NAME-anypoint-client-creds")
       }
-      steps {
       steps {
         withMaven(mavenSettingsConfig: 'bcd6979a-61dd-458b-8fa4-d8a0af5cd97d'){   
           sh 'echo "Anypoint user: $ANYPOINT_CLIENT_CREDS_USR"'
