@@ -53,20 +53,6 @@ pipeline {
         }
       }
     }
-    
-    post {
-      always {
-        publishHTML (target: [
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: false,
-                        keepAll: true,
-                        reportDir: 'target/site/munit/coverage',
-                        reportFiles: 'summary.html',
-                        reportName: "Code coverage"
-                    ])
-       step([$class: 'hudson.plugins.chucknorris.CordellWalkerRecorder'])
-      }
-    }
   }
 
   tools {
