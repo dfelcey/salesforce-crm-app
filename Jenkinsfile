@@ -49,7 +49,7 @@ pipeline {
       steps {
         withMaven(mavenSettingsConfig: "$SETTINGS_FILE_ID"){   
           sh 'echo "Anypoint user: $ANYPOINT_CLIENT_CREDS_USR"'
-          sh 'mvn -V -B -DskipTests deploy -DmuleDeploy -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION -Danypoint.username=$DEPLOY_CREDS_USR -Danypoint.password=$DEPLOY_CREDS_PSW -Dnypoint.platform.client_id=$ANYPOINT_CLIENT_CREDS_USR -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_CREDS_PWD -Dapp.name=$APP_NAME -Danypoint.environment=$ENVIRONMENT -Danypont.business_group=$BG '
+          sh 'mvn -V -B -DskipTests deploy -DmuleDeploy -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION -Danypoint.username=$DEPLOY_CREDS_USR -Danypoint.password=$DEPLOY_CREDS_PSW -Dnypoint.platform.client_id=$ANYPOINT_CLIENT_CREDS_USR -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_CREDS_PWD -Dapp.name=$APP_NAME -Danypoint.environment=$ENVIRONMENT -Danypont.business_group="$BG" '
         }
       }
     }
