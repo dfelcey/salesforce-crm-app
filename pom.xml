@@ -120,27 +120,9 @@
 			<version>9.7.8</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
-		<dependency>
-			<groupId>com.mulesoft.modules</groupId>
-			<artifactId>mule-secure-configuration-property-module</artifactId>
-			<version>1.2.0</version>
-			<classifier>mule-plugin</classifier>
-		</dependency>
 	</dependencies>
 
 	<repositories>
-          <repository>
-            <id>anypoint-exchange</id>
-            <name>Anypoint Exchange</name>
-            <url>https://maven.anypoint.mulesoft.com/api/v1/maven</url>
-            <layout>default</layout>
-        </repository>
-        <repository>
-            <id>mulesoft-releases</id>
-            <name>MuleSoft Releases Repository</name>
-            <url>https://repository.mulesoft.org/releases/</url>
-            <layout>default</layout>
-        </repository>
 		<repository>
 			<id>MuleRepository</id>
 			<name>MuleRepository</name>
