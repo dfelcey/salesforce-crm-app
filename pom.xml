@@ -77,7 +77,7 @@
 						<muleVersion>${mule.version}</muleVersion>
 						<username>${anypoint.username}</username>
 						<password>${anypont.password}</password>
-						<applicationName>${app.name}-${mule.env}</applicationName>
+						<applicationName>${app.name}</applicationName>
 						<environment>${anypoint.environment}</environment>
 						<businessGroup>${anypont.business_group}</businessGroup>
 						<workers>1</workers>
