@@ -23,7 +23,10 @@ pipeline {
     
     stage('Build') {
       steps {
-        sh 'mvn -B clean package -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION -DskipTests'
+      steps {
+        withMaven(mavenSettingsConfig: 'bcd6979a-61dd-458b-8fa4-d8a0af5cd97d'){   
+          sh 'mvn -B clean package -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION -DskipTests'
+        }
       }
     }
 
@@ -44,8 +47,11 @@ pipeline {
         ANYPOINT_CLIENT_CREDS = credentials("$ENV_NAME-anypoint-client-creds")
       }
       steps {
-        sh 'echo "Anypoint user: $ANYPOINT_CLIENT_CREDS_USR"'
-        sh 'mvn -V -B -DskipTests deploy -DmuleDeploy -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION -Danypoint.username=$DEPLOY_CREDS_USR -Danypoint.password=$DEPLOY_CREDS_PSW -Dnypoint.platform.client_id=$ANYPOINT_CLIENT_CREDS_USR -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_CREDS_PWD -Dapp.name=$APP_NAME -Danypoint.environment=$ENVIRONMENT -Danypont.business_group=$BG '
+      steps {
+        withMaven(mavenSettingsConfig: 'bcd6979a-61dd-458b-8fa4-d8a0af5cd97d'){   
+          sh 'echo "Anypoint user: $ANYPOINT_CLIENT_CREDS_USR"'
+          sh 'mvn -V -B -DskipTests deploy -DmuleDeploy -Dmule.env=$ENV_NAME -Dmule.version=$MULE_VERSION -Danypoint.username=$DEPLOY_CREDS_USR -Danypoint.password=$DEPLOY_CREDS_PSW -Dnypoint.platform.client_id=$ANYPOINT_CLIENT_CREDS_USR -Danypoint.platform.client_secret=$ANYPOINT_CLIENT_CREDS_PWD -Dapp.name=$APP_NAME -Danypoint.environment=$ENVIRONMENT -Danypont.business_group=$BG '
+        }
       }
     }
   }
