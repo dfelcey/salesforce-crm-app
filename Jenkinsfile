@@ -7,7 +7,7 @@ pipeline {
   	ENV_NAME = 'test'   
     DEPLOY_CREDS = credentials('deploy-anypoint-user')
     MULE_VERSION = '4.2.1'
-    	APP_NAME = "salesforce-crm-app-$ENV_NAME"
+    	APP_NAME = "salesforce-crm-app"
     // BG = "1Platform\\Solutions Consulting\\EMEA UK"
     BG = "Test"
     // SETTINGS_FILE_ID = 'regional-settings.xml'
