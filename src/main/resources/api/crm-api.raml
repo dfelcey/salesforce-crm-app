@@ -3,10 +3,19 @@ version: v1
 title: Salesforce CRM API
 
 types:
-  Contact: !include exchange_modules/82f78ed0-714c-47f0-b038-c0c1c061d2f3/contact/1.0.0/contact.raml
+  Contact: !include exchange_modules/42d8e488-c27a-40fa-981c-359a73641d4f/contact/1.0.0/contact.raml
+
+traits:
+  client-id-required:
+    queryParameters:
+      client_id:
+        type: string
+      client_secret:
+        type: string
 
 /contacts:
   get:
+    is: [client-id-required]
     queryParameters:
       changedSince: 
         type: datetime-only
@@ -20,6 +29,7 @@ types:
 
 /contacts/{id}:
   get:
+    is: [client-id-required]
     responses:
       200:
         description: Return contact details
